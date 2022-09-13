@@ -34,13 +34,13 @@ class CepController {
     async saveAll(request, response) {
 
         var data = fs.readFileSync(__dirname + "/20220913_lista_ceps.csv").toLocaleString();
- 
+
 
         const todos = [];
 
         var rows = data.split("\n");
         rows.forEach((row) => {
-            var columns =  row.split(",");
+            var columns = row.split(",");
             columns.forEach((column) => {
                 return todos.push(column.replace(/[-()\r\u0300-\u036f]/g, ''));
             })
@@ -51,21 +51,23 @@ class CepController {
                 baseURL: `http://viacep.com.br/ws/${todos[i]}/json/`,
             })
 
-            console.log(res.data);
-
-            const crCep = await CepRepository.create(
-                res.data.cep, 
-                res.data.logradouro, 
-                res.data.complemento, 
-                res.data.bairro, 
-                res.data.localidade, 
-                res.data.uf, 
-                res.data.ibge, 
-                res.data.gia, 
-                res.data.ddd, 
-                res.data.siafi
-            );
-
+            /* console.log(res.data); */
+            try {
+                const crCep = await CepRepository.create(
+                    res.data.cep,
+                    res.data.logradouro,
+                    res.data.complemento,
+                    res.data.bairro,
+                    res.data.localidade,
+                    res.data.uf,
+                    res.data.ibge,
+                    res.data.gia,
+                    res.data.ddd,
+                    res.data.siafi
+                ).catch();
+            } catch (error) {
+                throw new Error({ message: `Parece que temos um erro ${error}`});
+            }
             /* response.json(crCep); */
         }
 

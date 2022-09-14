@@ -66,7 +66,7 @@ Assim para todos os schemas.
 Para iniciar a aplicação, execute o comando abaixo dentro da pasta /src:
 
 ```
-$ node index.js
+$ node .\src\index.js 
 ```
 
 Para testar as rotas, use o insominia.
